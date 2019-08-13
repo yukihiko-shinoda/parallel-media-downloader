@@ -1,0 +1,15 @@
+.coverage
+.idea/**/$CACHE_FILE$
+.idea/**/$PRODUCT_WORKSPACE_FILE$
+.idea/**/encodings.xml
+.idea/**/mypy.xml
+.idea/**/pylint.xml
+.idea/**/tasks.xml
+.idea/**/workspace.xml
+.idea/sonarlint/*
+.mypy_cache
+.pytest_cache
+build
+dist
+parallelmediadownloader.egg-info
+__pycache__/

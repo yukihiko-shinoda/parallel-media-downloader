@@ -1,0 +1,33 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+# To process downloads in parallel
+aiohttp = "*"
+
+[dev-packages]
+aioresponses = "*"
+flake8 = "*"
+mypy = "*"
+pylint = "*"
+pytest = "*"
+pytest-asyncio = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+radon = "*"
+twine = "*"
+
+[requires]
+python_version = "3.7"
+
+[scripts]
+test = "cd tests && pytest"
+coverage = "cd tests && pytest --verbose --cov=parallelmediadownloader --cov-report=term-missing"
+flake8 = "flake8 --max-line-length=120 --statistics --show-source --radon-show-closures ."
+cc = "radon cc --show-complexity --min B ."
+mi = "radon mi --show ."
+clear = "rm -rf parallelmediadownloader.egg-info/* build/* dist/*"
+build = "python setup.py sdist bdist_wheel"
+deploy = "twine upload --repository pypi dist/*"
