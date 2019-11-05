@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 from parallelmediadownloader.media_file import MediaFile
 
@@ -7,4 +8,4 @@ from parallelmediadownloader.media_file import MediaFile
 class MediaDownloadResult:
     url: str
     status: int
-    media_file: MediaFile
+    media_file: Optional[MediaFile]

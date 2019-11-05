@@ -11,7 +11,10 @@ from parallelmediadownloader.modeia_download_result import MediaDownloadResult
 class ParallelMediaDownloader:
     @staticmethod
     def execute(list_download_order: Iterable[DownloadOrder], *,
-                limit: int = 5, media_filter: Optional[MediaFilter] = None) -> List[MediaDownloadResult]:
+                limit: int = 5, media_filter: Optional[MediaFilter] = None, allow_http_status: List[int] = None
+                ) -> List[MediaDownloadResult]:
         return asyncio.get_event_loop().run_until_complete(
-            ParallelMediaDownloadCoroutine.execute(list_download_order, limit=limit, media_filter=media_filter)
+            ParallelMediaDownloadCoroutine.execute(
+                list_download_order, limit=limit, media_filter=media_filter, allow_http_status=allow_http_status
+            )
         )

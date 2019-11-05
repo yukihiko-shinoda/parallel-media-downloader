@@ -13,7 +13,8 @@ from parallelmediadownloader.modeia_download_result import MediaDownloadResult
 class ParallelMediaDownloadCoroutine:
     @staticmethod
     async def execute(
-            list_download_order: Iterable[DownloadOrder], *, limit: int = 5, media_filter: Optional[MediaFilter] = None
+            list_download_order: Iterable[DownloadOrder], *,
+            limit: int = 5, media_filter: Optional[MediaFilter] = None, allow_http_status: List[int] = None
     ) -> List[MediaDownloadResult]:
         media_download_coroutine = MediaDownloadCoroutine(MediaSaveCoroutine(media_filter=media_filter))
         semaphore = Semaphore(limit)

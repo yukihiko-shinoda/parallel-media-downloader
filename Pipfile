@@ -3,10 +3,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
-[packages]
-# To process downloads in parallel
-aiohttp = "*"
-
 [dev-packages]
 aioresponses = "*"
 flake8 = "*"
@@ -19,8 +15,12 @@ pytest-mock = "*"
 radon = "*"
 twine = "*"
 
+[packages]
+# To process downloads in parallel
+aiohttp = "*"
+
 [requires]
-python_version = "3.7"
+python_version = "3.8"
 
 [scripts]
 test = "cd tests && pytest"

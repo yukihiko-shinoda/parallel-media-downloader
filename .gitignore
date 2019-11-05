@@ -13,3 +13,4 @@ build
 dist
 parallelmediadownloader.egg-info
 __pycache__/
+.env

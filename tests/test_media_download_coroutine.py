@@ -14,17 +14,20 @@ from parallelmediadownloader.media_download_coroutine import MediaDownloadCorout
 from tests.testlibraries.instance_resource import InstanceResource
 
 
+@pytest.fixture
+def download_order(tmp_path):
+    yield DownloadOrder(
+        InstanceResource.URL_TWITTER_IMAGE,
+        SaveOrder(tmp_path, '20190808154015pbs.twimg.com_media_CeBmNUIUUAAZoQ3', datetime(2019, 8, 8, 15, 40, 15))
+    )
+
+
 class TestMediaDownloadCoroutine:
     @staticmethod
     @pytest.mark.asyncio
-    async def test(mock_aioresponse, tmp_path):
+    async def test(mock_aioresponse, download_order):
         mock_aioresponse.get(
             InstanceResource.URL_TWITTER_IMAGE, status=200, body=InstanceResource.PATH_FILE_IMAGE_TWITTER.read_bytes()
-        )
-        file_name = '20190808154015pbs.twimg.com_media_CeBmNUIUUAAZoQ3'
-        created_date_time = datetime(2019, 8, 8, 15, 40, 15)
-        download_order = DownloadOrder(
-            InstanceResource.URL_TWITTER_IMAGE, SaveOrder(tmp_path, file_name, created_date_time)
         )
         semaphore = asyncio.Semaphore(5)
         async with aiohttp.ClientSession() as client_session:
@@ -34,18 +37,13 @@ class TestMediaDownloadCoroutine:
         assert media_download_result.url == 'https://pbs.twimg.com/media/CeBmNUIUUAAZoQ3?format=jpg&name=medium'
         assert media_download_result.status == 200
         path_file = media_download_result.media_file.path_file
-        assert path_file == (tmp_path / file_name)
+        assert path_file == download_order.save_order.path_file
         assert path_file.read_bytes() == InstanceResource.PATH_FILE_IMAGE_TWITTER.read_bytes()
 
     @staticmethod
     @pytest.mark.asyncio
-    async def test_timeout_error(mock_aioresponse, tmp_path):
+    async def test_timeout_error(mock_aioresponse, download_order):
         mock_aioresponse.get(InstanceResource.URL_TWITTER_IMAGE, status=200, exception=asyncio.TimeoutError())
-        file_name = '20190808154015pbs.twimg.com_media_CeBmNUIUUAAZoQ3'
-        created_date_time = datetime(2019, 8, 8, 15, 40, 15)
-        download_order = DownloadOrder(
-            InstanceResource.URL_TWITTER_IMAGE, SaveOrder(tmp_path, file_name, created_date_time)
-        )
         with pytest.raises(HttpTimeoutError) as error:
             semaphore = asyncio.Semaphore(5)
             async with aiohttp.ClientSession() as client_session:
@@ -55,16 +53,11 @@ class TestMediaDownloadCoroutine:
 
     @staticmethod
     @pytest.mark.asyncio
-    async def test_client_connector_error(mocker, mock_aioresponse, tmp_path):
+    async def test_client_connector_error(mocker, mock_aioresponse, download_order):
         mock = mocker.Mock()
         mock_aioresponse.get(InstanceResource.URL_TWITTER_IMAGE, status=200, exception=ClientConnectorError(
             mock, OSError()
         ))
-        file_name = '20190808154015pbs.twimg.com_media_CeBmNUIUUAAZoQ3'
-        created_date_time = datetime(2019, 8, 8, 15, 40, 15)
-        download_order = DownloadOrder(
-            InstanceResource.URL_TWITTER_IMAGE, SaveOrder(tmp_path, file_name, created_date_time)
-        )
         with pytest.raises(ClientConnectorError) as error:
             semaphore = asyncio.Semaphore(5)
             async with aiohttp.ClientSession() as client_session:
@@ -73,7 +66,36 @@ class TestMediaDownloadCoroutine:
 
     @staticmethod
     @pytest.mark.asyncio
-    async def test_client_response_error(mock_aioresponse, tmp_path):
+    async def test_allow_http_status_success(mock_aioresponse, download_order):
+        mock_aioresponse.get(
+            InstanceResource.URL_TWITTER_IMAGE, status=404, body=InstanceResource.PATH_FILE_IMAGE_TWITTER.read_bytes()
+        )
+        semaphore = asyncio.Semaphore(5)
+        async with aiohttp.ClientSession() as client_session:
+            media_download_result = await MediaDownloadCoroutine(MediaSaveCoroutine(), allow_http_status=[404]).execute(
+                semaphore, client_session, download_order
+            )
+        assert media_download_result.url == 'https://pbs.twimg.com/media/CeBmNUIUUAAZoQ3?format=jpg&name=medium'
+        assert media_download_result.status == 404
+        assert media_download_result.media_file is None
+
+    @staticmethod
+    @pytest.mark.asyncio
+    async def test_allow_http_status_error(mock_aioresponse, download_order):
+        mock_aioresponse.get(
+            InstanceResource.URL_TWITTER_IMAGE, status=500, body=InstanceResource.PATH_FILE_IMAGE_TWITTER.read_bytes()
+        )
+        with pytest.raises(ClientResponseError) as error:
+            semaphore = asyncio.Semaphore(5)
+            async with aiohttp.ClientSession() as client_session:
+                await MediaDownloadCoroutine(MediaSaveCoroutine(), allow_http_status=[404]).execute(
+                    semaphore, client_session, download_order
+                )
+        assert 'Internal Server Error' in str(error.value)
+
+    @staticmethod
+    @pytest.mark.asyncio
+    async def test_client_response_error_when_read(mock_aioresponse, download_order):
         class MockClientResponse(ClientResponse):
             async def read(self):
                 raise ClientResponseError(RequestInfo('', '', CIMultiDictProxy(CIMultiDict()), ''), ())
@@ -82,11 +104,6 @@ class TestMediaDownloadCoroutine:
             status=200,
             callback=lambda url, **kwargs: CallbackResult(response_class=MockClientResponse)  # noqa
             # Reason: AioResponse's bug.
-        )
-        file_name = '20190808154015pbs.twimg.com_media_CeBmNUIUUAAZoQ3'
-        created_date_time = datetime(2019, 8, 8, 15, 40, 15)
-        download_order = DownloadOrder(
-            InstanceResource.URL_TWITTER_IMAGE, SaveOrder(tmp_path, file_name, created_date_time)
         )
         with pytest.raises(HttpTimeoutError) as error:
             semaphore = asyncio.Semaphore(5)

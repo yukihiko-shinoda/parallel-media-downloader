@@ -12,7 +12,7 @@ def main():
 
     setup(
         name='parallelmediadownloader',
-        version='0.0.0',
+        version='0.0.1',
         description='This project helps you to download media file.',
         long_description=readme,
         long_description_content_type='text/markdown',
