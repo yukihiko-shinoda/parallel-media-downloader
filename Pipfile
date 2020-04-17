@@ -1,12 +1,13 @@
 [[source]]
+name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
-name = "pypi"
 
 [dev-packages]
 aioresponses = "*"
 flake8 = "*"
 mypy = "*"
+pipenv-setup = "*"
 pylint = "*"
 pytest = "*"
 pytest-asyncio = "*"
@@ -14,20 +15,21 @@ pytest-cov = "*"
 pytest-mock = "*"
 radon = "*"
 twine = "*"
+# Hotfix for Pipenv's Bug @see https://github.com/pypa/pipenv/issues/4101
+colorama = "*"
 
 [packages]
 # To process downloads in parallel
 aiohttp = "*"
 
-[requires]
-python_version = "3.8"
-
 [scripts]
-test = "cd tests && pytest"
-coverage = "cd tests && pytest --verbose --cov=parallelmediadownloader --cov-report=term-missing"
+test = "pytest tests"
+coverage = "pytest --verbose --cov=parallelmediadownloader --cov-report=term-missing tests"
+coverage_xml = "pytest --cov-report xml --cov=parallelmediadownloader tests"
 flake8 = "flake8 --max-line-length=120 --statistics --show-source --radon-show-closures ."
 cc = "radon cc --show-complexity --min B ."
 mi = "radon mi --show ."
+setup_sync = "pipenv-setup sync --pipfile"
+check_setup = "pipenv-setup check --strict"
 clear = "rm -rf parallelmediadownloader.egg-info/* build/* dist/*"
 build = "python setup.py sdist bdist_wheel"
-deploy = "twine upload --repository pypi dist/*"
