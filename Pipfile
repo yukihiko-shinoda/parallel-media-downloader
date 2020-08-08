@@ -5,6 +5,8 @@ verify_ssl = true
 
 [dev-packages]
 aioresponses = "*"
+# Hotfix for Pipenv's Bug @see https://github.com/pypa/pipenv/issues/4101
+colorama = "*"
 flake8 = "*"
 mypy = "*"
 pipenv-setup = "*"
@@ -15,8 +17,6 @@ pytest-cov = "*"
 pytest-mock = "*"
 radon = "*"
 twine = "*"
-# Hotfix for Pipenv's Bug @see https://github.com/pypa/pipenv/issues/4101
-colorama = "*"
 
 [packages]
 # To process downloads in parallel
