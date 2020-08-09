@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 """This module implements build settings."""
 
-from setuptools import setup
-from setuptools import find_packages
+from setuptools import find_packages, setup  # type: ignore
 
 
 def main():
@@ -22,6 +21,7 @@ def main():
         package_data={"parallelmediadownloader": ["py.typed"]},
         install_requires=["aiohttp"],
         dependency_links=[],
+        setup_requires=["pytest-runner"],
         url="https://github.com/yukihiko-shinoda/parallel-media-downloader",
         keywords="parallel media download downloader image jpg jpeg png gif aiohttp",
         classifiers=[

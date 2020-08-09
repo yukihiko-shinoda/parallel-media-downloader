@@ -1,8 +1,11 @@
+"""Coroutine of saving media."""
 from parallelmediadownloader.media_file import MediaFile, SaveOrder
 from parallelmediadownloader.media_filter import MediaFilter
 
 
 class MediaSaveCoroutine:
+    """Coroutine of saving media."""
+
     def __init__(self, *, media_filter: MediaFilter = None):
         self.media_filter = media_filter
 

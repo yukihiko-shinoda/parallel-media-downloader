@@ -5,7 +5,12 @@ verify_ssl = true
 
 [dev-packages]
 aioresponses = "*"
+# Hotfix for Pipenv's Bug @see https://github.com/pypa/pipenv/issues/4101
+colorama = "*"
+coverage = "*"
 flake8 = "*"
+invoke = "*"
+isort = "*"
 mypy = "*"
 pipenv-setup = "*"
 pylint = "*"
@@ -13,10 +18,12 @@ pytest = "*"
 pytest-asyncio = "*"
 pytest-cov = "*"
 pytest-mock = "*"
+pytest-resource-path = "*"
 radon = "*"
 twine = "*"
-# Hotfix for Pipenv's Bug @see https://github.com/pypa/pipenv/issues/4101
-colorama = "*"
+wheel = "*"
+xenon = "*"
+parallelmediadownloader = {editable = true, path = "."}
 
 [packages]
 # To process downloads in parallel

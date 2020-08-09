@@ -1,3 +1,4 @@
+"""Model for media file."""
 import os
 from dataclasses import dataclass
 from datetime import datetime
@@ -7,6 +8,8 @@ from typing import Optional
 
 @dataclass
 class SaveOrder:
+    """Aggregation of save order."""
+
     path_directory_download: Path
     file_name: str
     created_date_time: datetime
@@ -17,10 +20,12 @@ class SaveOrder:
 
 
 class MediaFile:
+    """Model for media file."""
+
     def __init__(self, media: bytes, save_order: SaveOrder):
         self.path_file = save_order.path_file
         self.is_filtered: Optional[bool] = None
-        with self.path_file.open('wb') as file:
+        with self.path_file.open("wb") as file:
             file.write(media)
         seconds = save_order.created_date_time.timestamp()
         os.utime(str(self.path_file), (seconds, seconds))

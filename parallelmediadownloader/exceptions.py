@@ -14,4 +14,4 @@ class HttpTimeoutError(Error):
         self.url = url
 
     def __str__(self) -> str:
-        return f'HttpTimeoutError. URL = {self.url}'
+        return f"HttpTimeoutError. URL = {self.url}"
