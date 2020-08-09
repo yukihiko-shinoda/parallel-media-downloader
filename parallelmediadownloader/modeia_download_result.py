@@ -1,3 +1,4 @@
+"""Aggregation of media download result."""
 from dataclasses import dataclass
 from typing import Optional
 
