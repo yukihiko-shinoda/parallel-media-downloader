@@ -16,7 +16,7 @@ class ParallelMediaDownloadCoroutine:
             list_download_order: Iterable[DownloadOrder], *,
             limit: int = 5, media_filter: Optional[MediaFilter] = None, allow_http_status: List[int] = None
     ) -> List[MediaDownloadResult]:
-        media_download_coroutine = MediaDownloadCoroutine(MediaSaveCoroutine(media_filter=media_filter))
+        media_download_coroutine = MediaDownloadCoroutine(MediaSaveCoroutine(media_filter=media_filter), allow_http_status=allow_http_status)
         semaphore = Semaphore(limit)
         async with aiohttp.ClientSession() as client_session:
             tasks = [media_download_coroutine.execute(
