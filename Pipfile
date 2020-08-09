@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 aioresponses = "*"
+bump2version = "*"
 # Hotfix for Pipenv's Bug @see https://github.com/pypa/pipenv/issues/4101
 colorama = "*"
 coverage = "*"
@@ -12,6 +13,7 @@ flake8 = "*"
 invoke = "*"
 isort = "*"
 mypy = "*"
+parallelmediadownloader = {editable = true, path = "."}
 pipenv-setup = "*"
 pylint = "*"
 pytest = "*"
@@ -23,20 +25,7 @@ radon = "*"
 twine = "*"
 wheel = "*"
 xenon = "*"
-parallelmediadownloader = {editable = true, path = "."}
 
 [packages]
 # To process downloads in parallel
 aiohttp = "*"
-
-[scripts]
-test = "pytest tests"
-coverage = "pytest --verbose --cov=parallelmediadownloader --cov-report=term-missing tests"
-coverage_xml = "pytest --cov-report xml --cov=parallelmediadownloader tests"
-flake8 = "flake8 --max-line-length=120 --statistics --show-source --radon-show-closures ."
-cc = "radon cc --show-complexity --min B ."
-mi = "radon mi --show ."
-setup_sync = "pipenv-setup sync --pipfile"
-check_setup = "pipenv-setup check --strict"
-clear = "rm -rf parallelmediadownloader.egg-info/* build/* dist/*"
-build = "python setup.py sdist bdist_wheel"
