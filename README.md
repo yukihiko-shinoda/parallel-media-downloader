@@ -28,6 +28,9 @@ Minimum example:
 ```python
 from datetime import datetime
 
+from parallelmediadownloader.media_download_coroutine import DownloadOrder
+from parallelmediadownloader.media_file import SaveOrder
+from parallelmediadownloader.parallel_media_downloader import ParallelMediaDownloader
 
 path_directory_download = "path/directory/download"
 created_date_time = datetime.now()
