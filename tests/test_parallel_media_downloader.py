@@ -10,10 +10,9 @@ from tests.testlibraries.instance_resource import InstanceResource
 
 
 class TestParallelMediaDownloader:
-    """Test for parallelMediaDownloader."""
+    """Test for ParallelMediaDownloader."""
 
-    @classmethod
-    def test(cls, tmp_path, resource_path_root, mock_aioresponse):
+    def test(self, tmp_path, resource_path_root, mock_aioresponse):
         """Tests."""
         created_date_time1 = datetime(2018, 10, 27, 14, 20, 44)
         created_date_time2 = datetime(2018, 11, 7, 10, 16, 24)
@@ -75,10 +74,10 @@ class TestParallelMediaDownloader:
 
         assert len(list_media_download_result) == len(list_download_order)
         for media_download_result, (download_order, content) in zip(list_media_download_result, list_download_order):
-            cls.check_download_result(media_download_result, download_order, content)
+            self.check_download_result(media_download_result, download_order, content)
 
-    @classmethod
-    def check_download_result(cls, media_download_result, download_order, content):
+    @staticmethod
+    def check_download_result(media_download_result, download_order, content):
         """Checks download result."""
         assert media_download_result.url == download_order.url
         assert media_download_result.status == 200
@@ -88,23 +87,21 @@ class TestParallelMediaDownloader:
         )
         assert media_download_result.media_file.path_file.read_bytes() == content
 
-    @classmethod
-    def test_filtered_result_length(cls, tmp_path, bytes_image_twitter, mock_aioresponse):
+    def test_filtered_result_length(self, tmp_path, bytes_image_twitter, mock_aioresponse):
         """Tests filtered result length."""
-        list_media_download_result = cls.filter(tmp_path, bytes_image_twitter, mock_aioresponse)
+        list_media_download_result = self.filter(tmp_path, bytes_image_twitter, mock_aioresponse)
         assert len(list_media_download_result) == 1
 
-    @classmethod
-    def test_filtered_result_content(cls, tmp_path, bytes_image_twitter, mock_aioresponse):
+    def test_filtered_result_content(self, tmp_path, bytes_image_twitter, mock_aioresponse):
         """Tests filtered result content."""
-        list_media_download_result = cls.filter(tmp_path, bytes_image_twitter, mock_aioresponse)
+        list_media_download_result = self.filter(tmp_path, bytes_image_twitter, mock_aioresponse)
         media_download_result = list_media_download_result[0]
         assert media_download_result.status == 200
         assert media_download_result.media_file.is_filtered
         assert not media_download_result.media_file.path_file.exists()
 
-    @classmethod
-    def filter(cls, tmp_path, bytes_image_twitter, mock_aioresponse):
+    @staticmethod
+    def filter(tmp_path, bytes_image_twitter, mock_aioresponse):
         """Filters."""
         url1 = InstanceResource.URL_TWITTER_IMAGE
         byte1 = bytes_image_twitter
