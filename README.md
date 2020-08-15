@@ -79,12 +79,11 @@ class ParallelMediaDownloader:
         media_filter: Optional[MediaFilter] = None,
         allow_http_status: List[int] = None
     ) -> List[MediaDownloadResult]:
-)
 ```
 
 #### list_download_order: Iterable[DownloadOrder]
 
-List of `DownloadOrder`. method will download them in parallel.
+List of `DownloadOrder`. Method will download them in parallel.
 
 #### limit: int = 5
 
