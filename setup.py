@@ -13,10 +13,11 @@ def main():
         author="Yukihiko Shinoda",
         author_email="yuk.hik.future@gmail.com",
         classifiers=[
-            "Development Status :: 4 - Beta",
+            "Development Status :: 5 - Production/Stable",
             "Intended Audience :: Developers",
             "Intended Audience :: Information Technology",
             "License :: OSI Approved :: MIT License",
+            "Natural Language :: English",
             "Operating System :: OS Independent",
             "Programming Language :: Python",
             "Programming Language :: Python :: 3",
