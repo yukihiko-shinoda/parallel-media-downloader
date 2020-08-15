@@ -31,16 +31,19 @@ def main():
         ],
         dependency_links=[],
         description="This project helps you to download media file.",
+        exclude_package_data={"": ["__pycache__", "*.py[co]", ".pytest_cache"]},
+        include_package_data=True,
         install_requires=["aiohttp"],
         keywords="parallel media download downloader image jpg jpeg png gif aiohttp",
         long_description=readme,
         long_description_content_type="text/markdown",
         name="parallelmediadownloader",
-        packages=find_packages(exclude=("tests*",)),
-        package_data={"parallelmediadownloader": ["py.typed"]},
+        packages=find_packages(include=["parallelmediadownloader", "parallelmediadownloader.*", "tests", "tests.*"]),
+        package_data={"parallelmediadownloader": ["py.typed"], "tests": ["*"]},
         setup_requires=["pytest-runner"],
         url="https://github.com/yukihiko-shinoda/parallel-media-downloader",
         version="0.0.1",
+        zip_safe=False,
     )
 
 
