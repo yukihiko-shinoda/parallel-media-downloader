@@ -22,8 +22,6 @@ pytest-cov = "*"
 pytest-mock = "*"
 pytest-resource-path = "*"
 radon = "*"
-twine = "*"
-wheel = "*"
 xenon = "*"
 
 [packages]
