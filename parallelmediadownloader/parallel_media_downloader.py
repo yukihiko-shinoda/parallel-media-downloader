@@ -7,6 +7,8 @@ from parallelmediadownloader.media_filter import MediaFilter
 from parallelmediadownloader.modeia_download_result import MediaDownloadResult
 from parallelmediadownloader.parallel_media_download_coroutine import ParallelMediaDownloadCoroutine
 
+__all__ = ["ParallelMediaDownloader"]
+
 
 class ParallelMediaDownloader:
     """API of parallel media downloading."""
