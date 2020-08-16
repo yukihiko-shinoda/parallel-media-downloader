@@ -11,6 +11,8 @@ from parallelmediadownloader.exceptions import HttpTimeoutError
 from parallelmediadownloader.media_save_coroutine import MediaSaveCoroutine, SaveOrder
 from parallelmediadownloader.modeia_download_result import MediaDownloadResult
 
+__all__ = ["DownloadOrder", "MediaDownloadCoroutine"]
+
 logger = getLogger(__name__)
 
 

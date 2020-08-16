@@ -10,6 +10,8 @@ from parallelmediadownloader.media_filter import MediaFilter
 from parallelmediadownloader.media_save_coroutine import MediaSaveCoroutine
 from parallelmediadownloader.modeia_download_result import MediaDownloadResult
 
+__all__ = ["ParallelMediaDownloadCoroutine"]
+
 
 class ParallelMediaDownloadCoroutine:
     """Coroutine of downloading media in parallel."""

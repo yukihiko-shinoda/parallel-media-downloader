@@ -2,6 +2,8 @@
 from parallelmediadownloader.media_file import MediaFile, SaveOrder
 from parallelmediadownloader.media_filter import MediaFilter
 
+__all__ = ["MediaSaveCoroutine"]
+
 
 class MediaSaveCoroutine:
     """Coroutine of saving media."""

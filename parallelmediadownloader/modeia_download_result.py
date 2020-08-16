@@ -4,6 +4,8 @@ from typing import Optional
 
 from parallelmediadownloader.media_file import MediaFile
 
+__all__ = ["MediaDownloadResult"]
+
 
 @dataclass
 class MediaDownloadResult:

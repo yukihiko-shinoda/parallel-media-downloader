@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 
 from parallelmediadownloader.media_file import MediaFile
 
+__all__ = ["MediaFilter", "NotImageFilter"]
+
 
 class MediaFilter(ABC):
     """Base class of media filter."""

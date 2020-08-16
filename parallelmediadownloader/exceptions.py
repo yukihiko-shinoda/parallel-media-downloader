@@ -1,5 +1,7 @@
 """This module implements exceptions for this package."""
 
+__all__ = ["Error", "HttpTimeoutError"]
+
 
 class Error(Exception):
     """
