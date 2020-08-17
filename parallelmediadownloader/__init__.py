@@ -9,7 +9,7 @@ from parallelmediadownloader.media_save_coroutine import *  # noqa
 from parallelmediadownloader.modeia_download_result import *  # noqa
 from parallelmediadownloader.parallel_media_downloader import *  # noqa
 
-__version__ = "0.0.1"
+__version__ = "0.1.0"
 
 __all__: List[str] = []
 # pylint: disable=undefined-variable

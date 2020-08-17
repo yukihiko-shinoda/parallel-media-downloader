@@ -44,7 +44,7 @@ def main():
         test_suite="tests",
         tests_require=["pytest>=3"],
         url="https://github.com/yukihiko-shinoda/parallel-media-downloader",
-        version="0.0.1",
+        version="0.1.0",
         zip_safe=False,
     )
 
