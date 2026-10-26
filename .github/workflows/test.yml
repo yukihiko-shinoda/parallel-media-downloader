@@ -2,53 +2,17 @@ name: Test
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
+permissions:
+  contents: read
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: [ '3.8', '3.7' ]
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - run: python -m pip install pipenv
-      - run: python -m pipenv install --python ${{ matrix.python-version }} --skip-lock --dev
-      - run: python -m pipenv run invoke test
-  check_style:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      - run: python -m pip install pipenv
-      - run: python -m pipenv install --skip-lock --dev
-      - run: python -m pipenv run invoke style --check
-  check_lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      - run: python -m pip install pipenv
-      - run: python -m pipenv install --skip-lock --dev
-      - run: python -m pipenv run invoke lint
-  check_complexity:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      - run: python -m pip install pipenv
-      - run: python -m pipenv install --skip-lock --dev
-      - run: python -m pipenv run invoke xenon
+  call-workflow-test:
+    uses: yukihiko-shinoda/reusable-workflow-invoke-lint-test/.github/workflows/workflow.yml@33e2c7ac8a46f8e37113fb4ccb1be5497e5fd48a  # v1.1.0
+    with:
+      support-python-versions: "[ '3.14', '3.13', '3.12', '3.11', '3.10', '3.9', '3.8' ]"
+      is-supporting-python-3-7-in-linux: true
+  call-workflow-lint:
+    uses: yukihiko-shinoda/reusable-workflow-invoke-lint-lint/.github/workflows/workflow.yml@0966c64de69c044585bbdca96980a8393c761829  # v1.0.0

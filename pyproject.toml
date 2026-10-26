@@ -1,28 +1,232 @@
-[tool.isort]
-# @see https://github.com/timothycrosley/isort/issues/694#issuecomment-581246882
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-line_length = 120
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
-# @see https://black.readthedocs.io/en/stable/pyproject_toml.html#configuration-format
-[tool.black]
-line-length = 120
+[dependency-groups]
+dev = [
+    # aioresponses 0.7.9 subscripts collections.abc.Mapping, which raises TypeError before Python 3.9.
+    "aioresponses<0.7.9; python_version < '3.9'",
+    "aioresponses; python_version >= '3.9'",
+    "bump-my-version",
+    "invokelint[basic]>=0.19.0",
+    "pytest-asyncio",
+    "pytest-mock",
+    "pytest-resource-path",
+    "pyvelocity; python_version >= '3.9'",
+]
+
+[project]
+name = "parallelmediadownloader"
+version = "0.2.0"
+description = "This project helps you to download media file."
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+keywords = ["parallel", "media", "download", "downloader", "image", "jpg", "jpeg", "png", "gif", "aiohttp"]
+authors = [
+    {name = "Yukihiko Shinoda", email = "yuk.hik.future@gmail.com"},
+]
+maintainers = [
+    {name = "Yukihiko Shinoda", email = "yuk.hik.future@gmail.com"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: AsyncIO",
+    "Framework :: aiohttp",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: System :: Archiving",
+    "Topic :: System :: Archiving :: Backup",
+    "Typing :: Typed",
+]
+dependencies = [
+    # To process downloads in parallel
+    "aiohttp",
+]
+
+[project.urls]
+homepage = "https://github.com/yukihiko-shinoda/parallel-media-downloader"
+repository = "https://github.com/yukihiko-shinoda/parallel-media-downloader"
+
+[tool.bandit.assert_used]
+skips = ["tests/*"]
+
+[tool.bumpversion]
+current_version = "0.2.0"
+commit = true
+tag = true
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "parallelmediadownloader/__init__.py"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+
+[tool.coverage.report]
+exclude_also = [
+    # Assume `if TYPE_CHECKING: ... else: ...` block is covered · Issue #831 · nedbat/coveragepy
+    #   https://github.com/nedbat/coveragepy/issues/831#issuecomment-517778185
+    "if TYPE_CHECKING:",
+    # Pylint will detect instead:
+    # - abstract-method / W0223 - Pylint 2.17.0-dev0 documentation
+    #   https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/abstract-method.html
+    "raise NotImplementedError",
+]
+
+[tool.docformatter]
+recursive = true
+# For compatibility with Black
+# - How to Configure docformatter — docformatter 1.7.5 documentation
+#   https://docformatter.readthedocs.io/en/stable/configuration.html#a-note-on-options-to-control-styles
+pre_summary_space = true
+wrap-descriptions = 119
+wrap-summaries = 119
+
+[tool.flake8]
+# Since B950 in flake8-bugbear detects lines that exceed max_line_length by more than 10%:
+# - PyCQA/flake8-bugbear: A plugin for Flake8 finding likely bugs and design problems in your program. Contains warnings that don't belong in pyflakes and pycodestyle.
+#   https://github.com/PyCQA/flake8-bugbear?tab=readme-ov-file#opinionated-warnings
+# This setting follows the Black documentation in case when we use flake8-bugbear:
+# - Using Black with other tools - Black 25.1.0 documentation
+#   https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#bugbear
+# Set max_line_length to account for B950's 10% allowance to maintain consistency with pyvelocity
+max_line_length = 108
+extend_ignore = [
+  # For compatibility with Black:
+  # - Using Black with other tools - Black 25.1.0 documentation
+  #   https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#bugbear
+  "E203",
+  "E501",
+  "E701",
+  # 2025-05-24 Now openstack/hacking wasn't introduced into Ruff and sorting imports is mainly considered with isort.
+  "H306",
+  # Cohesion may be in experimental.
+  "H601",
+]
+statistics = true
+show_source = true
+exclude = [
+  ".venv",
+]
+
+[tool.mypy]
+strict = true
+
+[tool.pylint]
+disable = [
+    # We check line length by flake8-bugbear B950.
+    "line-too-long",
+]
 
 [tool.pylint.basic]
 docstring-min-length = "7"
 
 [tool.pylint.format]
-max-line-length = "120"
-
-[tool.pylint.messages_control]
-# bad-continuation: @see https://github.com/PyCQA/pylint/pull/3571
-disable = ''',
-    bad-continuation,
-    '''
+max-line-length = 119
 
 [tool.pylint.options]
 # Since this rule against single responsibility principle.
 # @see https://stackoverflow.com/questions/28722314/why-does-pylint-want-2-public-methods-per-class/40258006#40258006
 min-public-methods = "1"
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+
+[tool.ruff]
+line-length = 119
+
+[tool.ruff.lint]
+external = [
+    "DUO",  # dlint
+    "H",    # Openstack/hacking
+]
+select = [
+    "ALL",
+    # Since compatible with PEP257, we can check docstring style by Ruff and don't need to consider about docstring style separately:
+    # - Should the first line of a Python function docstring be in imperative mood? (ruff / pydocstyle D401)
+    #   https://zenn.dev/y_shinoda/articles/pydocstyle-d401
+    "D401",    # First line should be in imperative mood
+]
+ignore = [
+    # lint.pydocstyle
+    # Reason: Docstring may be missed since docstring-min-length is set.
+    "D101",    # Missing docstring in public class
+    "D102",    # Missing docstring in public method
+    "D103",    # Missing docstring in public function
+    "D105",    # Missing docstring in magic method
+    "D106",    # Missing docstring in public nested class
+    "D107",    # Missing docstring in __init__
+    # Reason: First line may ends with function signature for expression.
+    "D402",    # First line should not be the function’s “signature”
+    # Reason: First line may ends with ":" for expression.
+    "D415",    # First line should end with a period, question mark, or exclamation point
+    # Reason: `Line too long` is checked by flake8-bugbear.
+    "E501",    # Line too long ({width} > {limit})
+]
+unfixable = [
+    # When fix `return a and b != ""` as `return a and b`, mypy will report warning:
+    #   error: Incompatible return value type (got "Union[Literal[False], str]", expected "bool")  [return-value]
+    "PLC1901",
+]
+
+[tool.ruff.lint.isort]
+# To follow H301: Do not import more than one module per line (*) in Flake8 + openstack/hacking
+force-single-line = true
+
+[tool.ruff.lint.mccabe]
+# The default value: 10 is too loose,
+# 5 is as same as the default value of Radon for A rank that we use without any problems for a decade.
+max-complexity = 5
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]
+
+[tool.uv]
+# Constraints here only restrict versions when the package is resolved into uv.lock (development environment).
+# They neither add the package as a requirement nor appear in the published package metadata.
+constraint-dependencies = [
+    # aioresponses 0.7.9 doesn't support aiohttp 3.14 yet:
+    #   TypeError: ClientResponse.__init__() missing 1 required keyword-only argument: 'stream_writer'
+    # Reason why this isn't defined in project.dependencies:
+    #   The upper bound is needed only by the test tool, and parallelmediadownloader itself has no known issue with aiohttp 3.14.
+    #   Publishing it would prevent users from installing aiohttp 3.14.x, including its future security fixes.
+    # Remove this constraint once aioresponses supports aiohttp 3.14.
+    "aiohttp<3.14",
+    # Brotli / brotlicffi 1.2.0 and earlier have an out-of-bounds write in the decoder (CVE-2026-111497).
+    # They are not direct dependencies, but aiohttp decodes Brotli responses automatically when either is installed,
+    # so any resolution that pulls them in must use the fixed versions.
+    # - Python packages vulnerable to node2shell Brotli CVE-2026-111497 | Aikido
+    #   https://www.aikido.dev/blog/python-packages-vulnerable-node2shell-brotli-cve-2026-111497
+    "brotli>=1.2.1",
+    "brotlicffi>=1.2.1.0",
+]

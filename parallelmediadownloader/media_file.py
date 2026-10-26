@@ -1,11 +1,17 @@
+# Copyright (C) 2019 Yukihiko Shinoda
 """Model for media file."""
+
+from __future__ import annotations
+
 import os
 from dataclasses import dataclass
-from datetime import datetime
-from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING
 
-__all__ = ["SaveOrder", "MediaFile"]
+if TYPE_CHECKING:
+    from datetime import datetime
+    from pathlib import Path
+
+__all__ = ["MediaFile", "SaveOrder"]
 
 
 @dataclass
@@ -24,13 +30,13 @@ class SaveOrder:
 class MediaFile:
     """Model for media file."""
 
-    def __init__(self, media: bytes, save_order: SaveOrder):
+    def __init__(self, media: bytes, save_order: SaveOrder) -> None:
         self.path_file = save_order.path_file
-        self.is_filtered: Optional[bool] = None
+        self.is_filtered: bool | None = None
         with self.path_file.open("wb") as file:
             file.write(media)
         seconds = save_order.created_date_time.timestamp()
         os.utime(str(self.path_file), (seconds, seconds))
 
     def remove(self) -> None:
-        os.remove(str(self.path_file))
+        self.path_file.unlink()
