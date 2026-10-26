@@ -23,7 +23,7 @@ class ParallelMediaDownloader:
         allow_http_status: List[int] = None
     ) -> List[MediaDownloadResult]:
         """Executes parallel media downloading."""
-        return asyncio.get_event_loop().run_until_complete(
+        return asyncio.run(
             ParallelMediaDownloadCoroutine.execute(
                 list_download_order, limit=limit, media_filter=media_filter, allow_http_status=allow_http_status
             )
