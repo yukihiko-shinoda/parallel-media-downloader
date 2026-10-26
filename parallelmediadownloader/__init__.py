@@ -14,7 +14,7 @@ from parallelmediadownloader.modeia_download_result import MediaDownloadResult
 from parallelmediadownloader.parallel_media_download_coroutine import ParallelMediaDownloadCoroutine
 from parallelmediadownloader.parallel_media_downloader import ParallelMediaDownloader
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "DownloadOrder",
