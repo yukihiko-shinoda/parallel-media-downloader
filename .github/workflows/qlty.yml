@@ -1,0 +1,16 @@
+on:
+  push:
+    branches:
+      - main
+# For OIDC token exchange with Qlty:
+# - Configuring OpenID Connect in cloud providers - GitHub Docs
+#   https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-cloud-providers#adding-permissions-settings
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  call-workflow:
+    uses: yukihiko-shinoda/reusable-workflow-invoke-lint-qlty/.github/workflows/workflow.yml@d559042ef2b0dc7bb96be1e03a1c4abd1d100a69  # v1.1.0
+    permissions:
+      contents: read
+      id-token: write
